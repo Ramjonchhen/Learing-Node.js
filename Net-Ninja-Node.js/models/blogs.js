@@ -5,17 +5,21 @@ const Schema = mongoose.Schema;
 const blogsSchema = new Schema(
   {
     title: {
-      type: string,
+      type: String,
       required: true,
     },
     snippet: {
-      type: string,
+      type: String,
       required: true,
     },
     body: {
-      type: string,
+      type: String,
       required: true,
     },
   },
   { timestamps: true }
 );
+
+const Blog = mongoose.model("Blog", blogsSchema);
+
+module.exports = Blog;
