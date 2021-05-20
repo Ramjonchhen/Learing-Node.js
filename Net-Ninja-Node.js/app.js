@@ -1,18 +1,24 @@
 const express = require("express");
-const Blog = require("./models/blogs.js");
-
 // express app
 const app = express();
 
+// importing the mongoose library
 const mongoose = require("mongoose");
 
+// for the form data validation
+const { urlencoded } = require("express");
+const { render } = require("ejs");
+
+const blogRoute = require("./routes/blogRoutes.js");
+
+// database url link
 const dburl =
   "mongodb+srv://ram:123@cluster0.qqq1n.mongodb.net/net-ninja-blog-project?retryWrites=true&w=majority";
 
 mongoose
   .connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) => {
-    console.log("connected to db");
+    console.log("Connected to db");
     app.listen(3000);
   })
   .catch((err) => {
@@ -22,8 +28,7 @@ mongoose
 // register view engines
 app.set("view engine", "ejs");
 
-console.log(__dirname);
-
+// middle wares and static files
 app.use((req, res, next) => {
   console.log("new request made:");
   console.log("host: ", req.hostname);
@@ -37,7 +42,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// for making the static file acessible
 app.use(express.static("public"));
+
+// parsing form data middleware
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.get("/", (req, res) => {
@@ -48,23 +57,5 @@ app.get("/about", (req, res) => {
   res.render("about", { title: "About" });
 });
 
-// blog routes
+app.use("/blogs",blogRoute);
 
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then((result) => {
-      res.render("index", { title: "All Blogs", blogs: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "Create Page" });
-});
-
-app.use((req, res) => {
-  res.status(404).render("404", { title: "404" });
-});
