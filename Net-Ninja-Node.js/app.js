@@ -5,6 +5,8 @@ const app = express();
 // importing the mongoose library
 const mongoose = require("mongoose");
 
+debugger;
+
 // for the form data validation
 const { urlencoded } = require("express");
 const { render } = require("ejs");
@@ -57,5 +59,4 @@ app.get("/about", (req, res) => {
   res.render("about", { title: "About" });
 });
 
-app.use("/blogs",blogRoute);
-
+app.use("/blogs", blogRoute);
