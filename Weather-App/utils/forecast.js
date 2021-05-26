@@ -7,21 +7,21 @@ const forecast = (lng, lat, callback) => {
 
   const url = `http://api.weatherstack.com/current?access_key=${API_KEY1}&query=${lng},${lat}&units=m`;
 
-  request({ url, json: true }, (error, response) => {
+  request({ url, json: true }, (error, { body }) => {
     if (error) {
       callback("error connecting to the network", undefined);
-    } else if (response.body.error) {
+    } else if (body.error) {
       callback("Unable to find the location.", undefined);
     } else {
-      let currentTemp = response.body.current.temperature;
-      let feelsLikeTemp = response.body.current.feelslike;
-      let currentWeatherCond = response.body.current.weather_descriptions[0];
-
-      callback(undefined, {
-        currTemp: currentTemp,
-        feelTemp: feelsLikeTemp,
-        currWeatCond: currentWeatherCond,
-      });
+      callback(
+        undefined,
+        "The weather is " +
+          body.current.weather_descriptions[0] +
+          " The temperature feels like " +
+          body.current.feelslike +
+          " but it is " +
+          body.current.temperature
+      );
     }
   });
 };
