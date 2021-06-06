@@ -85,14 +85,14 @@ class DbService {
     }
   }
 
-  async updateRowById(id,name) {
+  async updateRowById(id, name) {
     try {
       id = parseInt(id);
 
       const response = await new Promise((resolve, reject) => {
         let query = "UPDATE names SET name = ? where id = ?";
 
-        pool.query(query, [name,id], (err, result) => {
+        pool.query(query, [name, id], (err, result) => {
           if (err) {
             reject(new Error(err.message));
           }
@@ -106,6 +106,7 @@ class DbService {
     } catch (err) {
       console.error(err);
     }
+  }
 }
 
 module.exports = DbService;
