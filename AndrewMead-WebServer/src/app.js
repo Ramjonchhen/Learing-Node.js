@@ -48,6 +48,26 @@ app.get("/weather", (req, res) => {
   });
 });
 
+app.get("/help/*", (req, res) => {
+  res.render("error404", {
+    title: "Help Page Error",
+    errorMsg: "Help Page Not found",
+  });
+});
+
+app.get("/products", (req, res) => {
+  console.log(req.body);
+  console.log(req.query);
+});
+
+// request for error pages
+app.get("*", (req, res) => {
+  res.render("error404", {
+    title: "Error 404 Page",
+    errorMsg: "Error 404 Page Not found",
+  });
+});
+
 app.listen(3000, () => {
   console.log("server is started in the port 3000");
 });
