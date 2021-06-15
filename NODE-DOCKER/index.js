@@ -13,15 +13,22 @@ const app = express();
 
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
 
-// connecting to mongodb through mongoose
-mongoose
-  .connect(mongoURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("connected to db"))
-  .catch((err) => console.log(err));
+const connectWithRetry = () => {
+  // connecting to mongodb through mongoose
+  mongoose
+    .connect(mongoURL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => console.log("connected to db"))
+    .catch((err) => {
+      console.log(err);
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 
 const port = process.env.PORT || 3000;
 
