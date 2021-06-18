@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const postRouter = require("./routes/postRoutes");
+const userRouter = require("./routes/userRoutes");
 
 // IMPORTING MONGOOSE ENVIROMENT VARAIBLE
 const {
@@ -11,6 +12,8 @@ const {
 } = require("./config");
 
 const app = express();
+
+app.use(express.json());
 
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
 
@@ -39,6 +42,7 @@ app.get("/", (req, res) => {
 
 // localhost::3000/api/v1/posts
 app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/users", userRouter);
 
 app.listen(port, () => {
   console.log("listening on port", port);

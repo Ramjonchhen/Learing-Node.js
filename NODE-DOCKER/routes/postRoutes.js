@@ -11,7 +11,9 @@ router
   .post(postController.createPost);
 
 router
-  .router("/:id")
+  .route("/:id")
   .get(postController.getOnePost)
   .patch(postController.updatePost)
   .delete(postController.deletePost);
+
+module.exports = router;
